@@ -22,6 +22,16 @@ const fetchVideos = async () => {
     }
 }
 
+// converting posted date into hr min and seconds
+const postedDate = (num) => {
+    let hour = parseInt(num / 3600);
+    let remainingSec = num % 3600;
+    let min = parseInt(remainingSec / 60);
+    remainingSec = remainingSec % 60;
+    return `${hour}hr ${min}m ${remainingSec}s`;
+}
+
+
 // load categories btn in UI
 const loadCategories = (categories) => {
     let categoriesContainer = document.getElementById("categories-container");
@@ -43,8 +53,10 @@ const loadVideos = (obj) => {
         let card = document.createElement('div');
         card.className = "card"
         card.innerHTML = `
-        <figure class="h-52">
+        <figure class="h-52 relative">
             <img class="w-full h-full object-cover" src="${item.thumbnail}" alt="thumbnail" />
+            
+            ${item.others.posted_date?.length === 0 ? "" : `<div class="absolute bottom-2 right-2 text-white bg-black p-1 rounded-lg text-xs">${postedDate(item.others.posted_date)}</div>`}
         </figure>
         <div class="flex py-5 gap-3">
             <div>
