@@ -12,8 +12,11 @@ const fetchCategories = async () => {
 const loadCategories = (categories) => {
     let categoriesContainer = document.getElementById("categories-container");
     
-    categories.forEach(data => {
-        console.log(data.category);
+    categories.forEach(item => {
+        let categoryBtn = document.createElement('button');
+        categoryBtn.innerText = item.category;
+        categoryBtn.className = "btn bg-pri-clr text-white hover:bg-white hover:text-pri-clr hover:border-pri-clr";
+        categoriesContainer.append(categoryBtn);
     })
     
 }
