@@ -15,7 +15,7 @@ const fetchVideos = async () => {
     try {
         let res = await fetch('https://openapi.programming-hero.com/api/phero-tube/videos');
         let data = await res.json();
-        loadVideos(data);
+        loadVideos(data.videos);
     }
     catch (error) {
         console.error(`Error happend: ${error}`)
@@ -28,7 +28,7 @@ const postedDate = (num) => {
     let remainingSec = num % 3600;
     let min = parseInt(remainingSec / 60);
     remainingSec = remainingSec % 60;
-    return `${hour}hr ${min}m ${remainingSec}s`;
+    return `${hour}hr ${min}m ${remainingSec}s ago`;
 }
 
 
@@ -37,19 +37,21 @@ const loadCategories = (categories) => {
     let categoriesContainer = document.getElementById("categories-container");
 
     categories.forEach(item => {
-        let categoryBtn = document.createElement('button');
-        categoryBtn.innerText = item.category;
-        categoryBtn.className = "btn bg-pri-clr text-white hover:bg-white hover:text-pri-clr hover:border-pri-clr";
-        categoriesContainer.append(categoryBtn);
+        let categoryBtnContainer = document.createElement('div');
+        categoryBtnContainer.innerHTML = `
+        <button onclick="loadCategoryVideos(${item.category_id})" class="btn bg-pri-clr text-white hover:bg-white hover:text-pri-clr hover:border-pri-clr">${item.category}</button>
+        `;
+        categoriesContainer.append(categoryBtnContainer);
     })
 
 }
 
 // load videos in UI
-const loadVideos = (obj) => {
+const loadVideos = (arr) => {
     let videosContainer = document.getElementById("videos-container");
+    videosContainer.innerHTML = "";
 
-    obj.videos.forEach(item => {
+    arr.forEach(item => {
         let card = document.createElement('div');
         card.className = "card"
         card.innerHTML = `
@@ -77,7 +79,14 @@ const loadVideos = (obj) => {
     })
 }
 
-
+// load category videos
+const loadCategoryVideos = (id) => {
+    // fetch videos by category id
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+    .then(res => res.json())
+    .then(data => loadVideos(data.category))
+    .catch(err => console.log(`erron happend ${err}`))
+}
 
 
 fetchCategories()
