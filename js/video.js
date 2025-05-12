@@ -50,7 +50,18 @@ const loadCategories = (categories) => {
 const loadVideos = (arr) => {
     let videosContainer = document.getElementById("videos-container");
     videosContainer.innerHTML = "";
+    if (arr.length === 0) {
+        videosContainer.classList.remove("grid");
+        videosContainer.innerHTML = `
+        <div class="h-[60vh] flex flex-col gap-4 justify-center items-center">
+            <img src="./assets/Icon.png"/>
+            <h2 class="text-2xl font-bold">No content available in this category</h2>
+        </div>
+        `
+    } else {
+        videosContainer.classList.add("grid");
 
+    }
     arr.forEach(item => {
         let card = document.createElement('div');
         card.className = "card"
@@ -83,9 +94,9 @@ const loadVideos = (arr) => {
 const loadCategoryVideos = (id) => {
     // fetch videos by category id
     fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
-    .then(res => res.json())
-    .then(data => loadVideos(data.category))
-    .catch(err => console.log(`erron happend ${err}`))
+        .then(res => res.json())
+        .then(data => loadVideos(data.category))
+        .catch(err => console.log(`erron happend ${err}`))
 }
 
 
