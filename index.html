@@ -89,6 +89,23 @@
 
         <section id="videos-container" class="px-3 md:px-0 mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 ">
         </section>
+
+        <!-- details modal -->
+        <!-- Open the modal using ID.showModal() method -->
+        <!-- <button class="btn" >open modal</button> -->
+        <dialog onclick="showModal()" id="details" class="modal">
+            <div class="modal-box">
+                <div id="modal-body">
+
+                </div>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <!-- if there is a button in form, it will close the modal -->
+                        <button class="btn btn-sm bg-pri-clr text-white hover:bg-white hover:text-pri-clr hover:border-pri-clr">Close</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
     </main>
     <script src="./js/video.js"></script>
 </body>

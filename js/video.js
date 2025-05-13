@@ -39,11 +39,27 @@ const loadCategories = (categories) => {
     categories.forEach(item => {
         let categoryBtnContainer = document.createElement('div');
         categoryBtnContainer.innerHTML = `
-        <button id="btn-i" onclick="loadCategoryVideos(${item.category_id})" class="btn bg-pri-clr text-white hover:bg-white hover:text-pri-clr hover:border-pri-clr">${item.category}</button>
+        <button
+         onclick="loadCategoryVideos(${item.category_id})" class="btn btn-sm bg-pri-clr text-white hover:bg-white hover:text-pri-clr hover:border-pri-clr">${item.category}</button>
         `;
         categoriesContainer.append(categoryBtnContainer);
     })
 
+}
+
+// show video details via modal
+const showDetails = async(video_id) => {
+    const url = `https://openapi.programming-hero.com/api/phero-tube/video/${video_id}`;
+    let res = await fetch(url);
+    let data = await res.json(); 
+
+    // show modal
+    const modalBody = document.getElementById("modal-body");
+    modalBody.innerHTML = `
+    <img class="rounded-xl mb-3 w-full" src="${data.video.thumbnail}"/>
+    <h2>${data.video.description}</h2>
+    `
+    details.showModal();
 }
 
 // load videos in UI
@@ -82,6 +98,7 @@ const loadVideos = (arr) => {
                     ${item.authors[0].verified ? `<img class="w-5" src="https://img.icons8.com/?size=48&id=98A4yZTt9abw&format=png"/>` : ""}
                 </div>
                 <p class="text-gray-600">${item.others.views}</p>
+                <button onclick="showDetails('${item.video_id}')" class="btn btn-xs bg-[#2b2d42] text-white hover:bg-white hover:text-[#2b2d42] hover:border-[#2b2d42]">Details</button>
             </div>
         </div>
         `;
@@ -102,3 +119,5 @@ const loadCategoryVideos = (id) => {
 
 fetchCategories()
 fetchVideos()
+// my_modal_1.showModal();
+// details.showModal();
