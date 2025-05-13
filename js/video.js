@@ -39,7 +39,7 @@ const loadCategories = (categories) => {
     categories.forEach(item => {
         let categoryBtnContainer = document.createElement('div');
         categoryBtnContainer.innerHTML = `
-        <button onclick="loadCategoryVideos(${item.category_id})" class="btn bg-pri-clr text-white hover:bg-white hover:text-pri-clr hover:border-pri-clr">${item.category}</button>
+        <button id="btn-i" onclick="loadCategoryVideos(${item.category_id})" class="btn bg-pri-clr text-white hover:bg-white hover:text-pri-clr hover:border-pri-clr">${item.category}</button>
         `;
         categoriesContainer.append(categoryBtnContainer);
     })
