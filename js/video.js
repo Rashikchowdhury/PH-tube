@@ -39,8 +39,11 @@ const loadCategories = (categories) => {
     categories.forEach(item => {
         let categoryBtnContainer = document.createElement('div');
         categoryBtnContainer.innerHTML = `
-        <button
-         onclick="loadCategoryVideos(${item.category_id})" class="btn btn-sm bg-pri-clr text-white hover:bg-white hover:text-pri-clr hover:border-pri-clr">${item.category}</button>
+        <button id="btn-${item.category_id}"
+                onclick="loadCategoryVideos(${item.category_id})"
+                class="btn btn-sm active-btn-off active-btn">
+                    ${item.category}
+        </button>
         `;
         categoriesContainer.append(categoryBtnContainer);
     })
@@ -48,10 +51,10 @@ const loadCategories = (categories) => {
 }
 
 // show video details via modal
-const showDetails = async(video_id) => {
+const showDetails = async (video_id) => {
     const url = `https://openapi.programming-hero.com/api/phero-tube/video/${video_id}`;
     let res = await fetch(url);
-    let data = await res.json(); 
+    let data = await res.json();
 
     // show modal
     const modalBody = document.getElementById("modal-body");
@@ -108,16 +111,30 @@ const loadVideos = (arr) => {
 }
 
 // load category videos
-const loadCategoryVideos = (id) => {
+const loadCategoryVideos = async (id) => {
     // fetch videos by category id
-    fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
-        .then(res => res.json())
-        .then(data => loadVideos(data.category))
-        .catch(err => console.log(`erron happend ${err}`))
+    let res = await fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`);
+    let data = await res.json();
+    loadVideos(data.category);
+
+    // remove active btn styles
+    removeActiveBtnStyles();
+
+    // add active btn styles
+    const categoryButtons = document.getElementById(`btn-${id}`);
+    categoryButtons.classList.add("active-btn-on");
+    categoryButtons.classList.remove("active-btn-off");
+};
+
+const removeActiveBtnStyles = () => {
+    let activeBtns = document.getElementsByClassName('active-btn');
+    // console.log(activeBtns);
+    for (let btn of activeBtns) {
+        btn.classList.remove("active-btn-on");
+        btn.classList.add("active-btn-off");
+    }
 }
 
 
-fetchCategories()
-fetchVideos()
-// my_modal_1.showModal();
-// details.showModal();
+fetchCategories();
+fetchVideos();
