@@ -11,9 +11,9 @@ const fetchCategories = async () => {
 }
 
 // fetch videos
-const fetchVideos = async () => {
+const fetchVideos = async (txt = "") => {
     try {
-        let res = await fetch('https://openapi.programming-hero.com/api/phero-tube/videos');
+        let res = await fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${txt}`);
         let data = await res.json();
         loadVideos(data.videos);
     }
@@ -74,7 +74,7 @@ const loadVideos = (arr) => {
         videosContainer.innerHTML = `
         <div class="h-[60vh] flex flex-col gap-4 justify-center items-center">
             <img src="./assets/Icon.png"/>
-            <h2 class="text-2xl font-bold">No content available in this category</h2>
+            <h2 class="text-2xl font-bold">No content available</h2>
         </div>
         `
     } else {
@@ -135,6 +135,9 @@ const removeActiveBtnStyles = () => {
     }
 }
 
-
+// search videos with search bar
+document.getElementById("search-input").addEventListener('keyup', function(txt){
+    fetchVideos(txt.target.value);
+})
 fetchCategories();
 fetchVideos();
